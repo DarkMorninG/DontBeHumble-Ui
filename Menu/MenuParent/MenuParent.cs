@@ -1,0 +1,125 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using DBH.Base;
+using UnityEngine;
+using Vault;
+using Vault.BetterCoroutine;
+
+namespace DBH.UI.Menu.MenuParent {
+    public abstract class MenuParent : DBHMono {
+        [SerializeField]
+        private DefaultExtensions defaultExtensions;
+
+        private Action onClose;
+
+        public DefaultExtensions DefaultExtensions => defaultExtensions;
+
+        public abstract void ActivateMenu();
+        public abstract void DeActivateMenu();
+        public abstract void Destroy();
+
+        protected abstract void CommitInternal();
+
+        public void Commit() {
+            defaultExtensions?.Commit();
+            CommitInternal();
+        }
+
+        public abstract int MenuPointCount();
+
+        public abstract void CommitProgress(int progress);
+        public abstract void CommitProgressCompleted();
+        public abstract void CommitProgressAborted();
+        protected abstract void AbortInternal();
+
+        public void Abort() {
+            defaultExtensions?.Abort();
+            AbortInternal();
+        }
+
+        public void IncreaseVertical() {
+            defaultExtensions?.DirectionInput(ExecutableMenu.Direction.Up);
+            IncreaseVerticalInternal();
+        }
+
+        public void DecreaseVertical() {
+            defaultExtensions?.DirectionInput(ExecutableMenu.Direction.Down);
+            DecreaseVerticalInternal();
+        }
+
+        public void IncreaseHorizontal() {
+            defaultExtensions?.DirectionInput(ExecutableMenu.Direction.Right);
+            IncreaseHorizontalInternal();
+        }
+
+        public void DecreaseHorizontal() {
+            defaultExtensions?.DirectionInput(ExecutableMenu.Direction.Left);
+            DecreaseHorizontalInternal();
+        }
+
+
+        protected virtual void IncreaseVerticalInternal() {
+        }
+
+        protected virtual void DecreaseVerticalInternal() {
+        }
+
+        protected virtual void IncreaseHorizontalInternal() {
+        }
+
+        protected virtual void DecreaseHorizontalInternal() {
+        }
+
+        public virtual void InputRaw(Vector2 input) {
+        }
+
+        public virtual void CoverAll() {
+        }
+
+        public virtual void UnCoverAll() {
+        }
+
+        public virtual void Open() {
+        }
+
+        protected virtual void CloseInternal() {
+        }
+
+        public void Close() {
+            onClose?.Invoke();
+            CloseInternal();
+        }
+
+        public void OnClose(Action callback) {
+            onClose = callback;
+        }
+
+        public virtual void Reload(Action onFinished = null) {
+        }
+
+        protected void CreateMenuPoints(List<GameObject> allMenuPoints, Action<List<MenuPoint>> onFinished) {
+            List<MenuPoint> createdMenuPoints = new();
+            List<IAsyncRuntime> allRunTimes = new();
+
+            allMenuPoints.ForEach(m => {
+                MenuPoint menuPoint;
+                var customButton = m.GetComponent<ICustomButton>();
+                if (customButton == null) return;
+                allRunTimes.Add(AsyncRuntime.WaitUntil(() => customButton.StartFinished,
+                    () => {
+                        menuPoint = customButton.Cover.CoverEnabled
+                            ? new MenuPoint(m, false, customButton)
+                            : new MenuPoint(m, true, customButton);
+                        createdMenuPoints.Add(menuPoint);
+                    }));
+            });
+            AsyncRuntime.WaitUntil(() => allRunTimes.All(runtime => runtime.IsFinished),
+                () => {
+                    if (!createdMenuPoints.IsEmpty()) {
+                        onFinished?.Invoke(createdMenuPoints);
+                    }
+                });
+        }
+    }
+}
