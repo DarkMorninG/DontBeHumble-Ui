@@ -5,9 +5,12 @@ using DBH.UI.Controller;
 namespace DBH.UI.Input {
     [Bean]
     public class EnableInputGroup : IMenuInteractionChanged{
-        [Grab]
-        private IInputController inputController;
-        
+        private readonly IInputController inputController;
+
+        public EnableInputGroup(IInputController inputController) {
+            this.inputController = inputController;
+        }
+
         public int Order() {
             return 0;
         }
