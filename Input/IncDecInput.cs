@@ -16,6 +16,7 @@ namespace DBH.UI.Input {
         }
 
         protected override void InputChanged(Vector2 input) {
+            if (input == Vector2.zero) return;
             var inputPressed = input.x > .5f || input.y > .5f || input.x > -.5f || input.y > -.5f;
             if (!inputPressed) return;
             var direction = GetDirection(input);
