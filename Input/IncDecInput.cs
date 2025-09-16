@@ -21,9 +21,9 @@ namespace DBH.UI.Input {
             if (!inputPressed) return;
             var direction = GetDirection(input);
             if (inputDelay.IsNotRunning()) {
-                inputDelay = AsyncRuntime.WaitForSeconds(() => OnIncDecPressed?.Invoke(direction), .2f);
+                inputDelay = AsyncRuntime.WaitForSeconds(() => OnIncDecPressed?.Invoke(direction), .05f);
             } else {
-                inputDelay.AndAfterFinishDo(() => inputDelay = AsyncRuntime.WaitForSeconds(() => OnIncDecPressed?.Invoke(direction), .2f));
+                inputDelay.AndAfterFinishDo(() => inputDelay = AsyncRuntime.WaitForSeconds(() => OnIncDecPressed?.Invoke(direction), .05f));
             }
         }
 
