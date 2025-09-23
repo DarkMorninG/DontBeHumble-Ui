@@ -13,6 +13,7 @@ namespace DBH.UI.Menu.MenuParent {
 
         private GraphSelector<MultiSelectDto> graphSelector;
 
+        public override IExecutableMenu CurrentMenu => graphSelector.CurrentSelected.ExecutableMenu;
 
         public override void ActivateMenu() {
             MultiSelectDto lastSelected = null;

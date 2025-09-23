@@ -14,9 +14,9 @@ namespace DBH.UI.Menu.MenuParent {
         [SerializeField]
         private bool roundRobin = true;
 
-
         private GridSelector<MultiSelectDto> gridSelector;
 
+        public override IExecutableMenu CurrentMenu => gridSelector.CurrentSelected.ExecutableMenu;
 
         public override void ActivateMenu() {
             MultiSelectDto lastSelected = null;

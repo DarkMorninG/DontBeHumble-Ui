@@ -44,6 +44,8 @@ namespace DBH.UI.Menu.MenuParent {
 
         public ListSelector<MultiSelectDto> ListSelector { get; private set; }
 
+        public override IExecutableMenu CurrentMenu => ListSelector.Selected.ExecutableMenu;
+
         public MenuDirection MenuDirection {
             get => menuDirection;
             set => menuDirection = value;

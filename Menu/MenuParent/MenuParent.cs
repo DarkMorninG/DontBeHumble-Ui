@@ -15,6 +15,8 @@ namespace DBH.UI.Menu.MenuParent {
 
         public DefaultExtensions DefaultExtensions => defaultExtensions;
 
+        public abstract IExecutableMenu CurrentMenu { get; }
+
         public abstract void ActivateMenu();
         public abstract void DeActivateMenu();
         public abstract void Destroy();
@@ -22,6 +24,10 @@ namespace DBH.UI.Menu.MenuParent {
         protected abstract void CommitInternal();
 
         public void Commit() {
+            if (defaultExtensions != null) {
+                defaultExtensions.ItemHolderOverride = CurrentMenu.Items;
+            }
+
             defaultExtensions?.Commit();
             CommitInternal();
         }
@@ -34,26 +40,41 @@ namespace DBH.UI.Menu.MenuParent {
         protected abstract void AbortInternal();
 
         public void Abort() {
+            if (defaultExtensions != null) {
+                defaultExtensions.ItemHolderOverride = CurrentMenu.Items;
+            }
             defaultExtensions?.Abort();
             AbortInternal();
         }
 
         public void IncreaseVertical() {
+            if (defaultExtensions != null) {
+                defaultExtensions.ItemHolderOverride = CurrentMenu.Items;
+            }
             defaultExtensions?.DirectionInput(ExecutableMenu.Direction.Up);
             IncreaseVerticalInternal();
         }
 
         public void DecreaseVertical() {
+            if (defaultExtensions != null) {
+                defaultExtensions.ItemHolderOverride = CurrentMenu.Items;
+            }
             defaultExtensions?.DirectionInput(ExecutableMenu.Direction.Down);
             DecreaseVerticalInternal();
         }
 
         public void IncreaseHorizontal() {
+            if (defaultExtensions != null) {
+                defaultExtensions.ItemHolderOverride = CurrentMenu.Items;
+            }
             defaultExtensions?.DirectionInput(ExecutableMenu.Direction.Right);
             IncreaseHorizontalInternal();
         }
 
         public void DecreaseHorizontal() {
+            if (defaultExtensions != null) {
+                defaultExtensions.ItemHolderOverride = CurrentMenu.Items;
+            }
             defaultExtensions?.DirectionInput(ExecutableMenu.Direction.Left);
             DecreaseHorizontalInternal();
         }

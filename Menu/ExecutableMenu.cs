@@ -39,7 +39,11 @@ namespace DBH.UI.Menu {
         public event IExecutableMenu.WithItemHolder OnDeSelectedWithItemHolder;
         public event IExecutableMenu.WithItemHolder OnSelectedWithItemHolder;
 
-        public ItemHolder Items => itemHolder;
+        public ItemHolder Items => ItemHolder();
+
+        protected virtual ItemHolder ItemHolder() {
+            return itemHolder;
+        }
 
         public void Commit() {
             var commitBlock = GetComponent<ICommitBlock>();
@@ -53,7 +57,7 @@ namespace DBH.UI.Menu {
 
         public void CommitProgress(int progress) {
             if (itemHolder != null) {
-                OnCommitProgressWithItemHolder?.Invoke(progress, itemHolder);
+                OnCommitProgressWithItemHolder?.Invoke(progress, ItemHolder());
             }
 
             OnCommitProgress?.Invoke(progress);
@@ -61,7 +65,7 @@ namespace DBH.UI.Menu {
 
         public void CommitProgressCompleted() {
             if (itemHolder != null) {
-                OnCommitProgressCompletedWithItemHolder?.Invoke(itemHolder);
+                OnCommitProgressCompletedWithItemHolder?.Invoke(ItemHolder());
             }
 
             OnCommitProgressCompleted?.Invoke();
@@ -69,7 +73,7 @@ namespace DBH.UI.Menu {
 
         public void CommitProgressAborted() {
             if (itemHolder != null) {
-                OnCommitProgressAbortedWithItemHolder?.Invoke(itemHolder);
+                OnCommitProgressAbortedWithItemHolder?.Invoke(ItemHolder());
             }
 
             OnCommitProgressAborted?.Invoke();
@@ -77,7 +81,7 @@ namespace DBH.UI.Menu {
 
         public void Selected() {
             if (itemHolder != null) {
-                OnSelectedWithItemHolder?.Invoke(itemHolder);
+                OnSelectedWithItemHolder?.Invoke(ItemHolder());
             }
 
             OnSelected?.Invoke();
@@ -95,9 +99,9 @@ namespace DBH.UI.Menu {
 
 
         private void OnCommit() {
-            if (itemHolder != null) {
-                OnCommitEventWithItemHolder?.Invoke(itemHolder);
-                OnAfterCommitEventWithItemHolder?.Invoke(itemHolder);
+            if (ItemHolder() != null) {
+                OnCommitEventWithItemHolder?.Invoke(ItemHolder());
+                OnAfterCommitEventWithItemHolder?.Invoke(ItemHolder());
             }
 
             OnCommitEvent?.Invoke();
@@ -106,9 +110,9 @@ namespace DBH.UI.Menu {
 
 
         private void OnAbort() {
-            if (itemHolder != null) {
-                OnAbortEventWithItemHolder?.Invoke(itemHolder);
-                OnAfterAbortEventWithItemHolder?.Invoke(itemHolder);
+            if (ItemHolder() != null) {
+                OnAbortEventWithItemHolder?.Invoke(ItemHolder());
+                OnAfterAbortEventWithItemHolder?.Invoke(ItemHolder());
             }
 
             OnAbortEvent?.Invoke();
