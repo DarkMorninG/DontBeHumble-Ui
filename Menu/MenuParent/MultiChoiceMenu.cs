@@ -231,9 +231,8 @@ namespace DBH.UI.Menu.MenuParent {
             }
 
             oldSelected?.ExecutableMenu.DeSelected();
-            DefaultExtensions?.DeSelected();
             newSelected.ExecutableMenu.Selected();
-            DefaultExtensions?.Selected();
+            MenuButtonSelected();
         }
 
         [ContextMenu("Add Children")]

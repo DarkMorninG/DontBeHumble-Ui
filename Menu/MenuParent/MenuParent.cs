@@ -43,6 +43,7 @@ namespace DBH.UI.Menu.MenuParent {
             if (defaultExtensions != null) {
                 defaultExtensions.ItemHolderOverride = CurrentMenu.Items;
             }
+
             defaultExtensions?.Abort();
             AbortInternal();
         }
@@ -51,6 +52,7 @@ namespace DBH.UI.Menu.MenuParent {
             if (defaultExtensions != null) {
                 defaultExtensions.ItemHolderOverride = CurrentMenu.Items;
             }
+
             defaultExtensions?.DirectionInput(ExecutableMenu.Direction.Up);
             IncreaseVerticalInternal();
         }
@@ -59,6 +61,7 @@ namespace DBH.UI.Menu.MenuParent {
             if (defaultExtensions != null) {
                 defaultExtensions.ItemHolderOverride = CurrentMenu.Items;
             }
+
             defaultExtensions?.DirectionInput(ExecutableMenu.Direction.Down);
             DecreaseVerticalInternal();
         }
@@ -67,6 +70,7 @@ namespace DBH.UI.Menu.MenuParent {
             if (defaultExtensions != null) {
                 defaultExtensions.ItemHolderOverride = CurrentMenu.Items;
             }
+
             defaultExtensions?.DirectionInput(ExecutableMenu.Direction.Right);
             IncreaseHorizontalInternal();
         }
@@ -75,6 +79,7 @@ namespace DBH.UI.Menu.MenuParent {
             if (defaultExtensions != null) {
                 defaultExtensions.ItemHolderOverride = CurrentMenu.Items;
             }
+
             defaultExtensions?.DirectionInput(ExecutableMenu.Direction.Left);
             DecreaseHorizontalInternal();
         }
@@ -117,6 +122,14 @@ namespace DBH.UI.Menu.MenuParent {
         }
 
         public virtual void Reload(Action onFinished = null) {
+        }
+
+        protected void MenuButtonSelected() {
+            if (defaultExtensions != null) {
+                defaultExtensions.ItemHolderOverride = CurrentMenu.Items;
+            }
+            DefaultExtensions?.DeSelected();
+            DefaultExtensions?.Selected();
         }
 
         protected void CreateMenuPoints(List<GameObject> allMenuPoints, Action<List<MenuPoint>> onFinished) {
