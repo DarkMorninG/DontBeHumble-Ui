@@ -109,7 +109,10 @@ namespace DBH.UI.Menu.MenuParent {
 
         public override void DeActivateMenu() {
             if (_createdPointer != null) _createdPointer.SetActive(false);
-            if (ListSelector != null) ListSelector.OnSelectionChange -= ChangePointer;
+            if (ListSelector != null) {
+                ListSelector.OnSelectionChange -= ChangePointer;
+                ListSelector.Selected.ExecutableMenu.DeSelected();
+            }
         }
 
         public override void Reload(Action onFinished = null) {
