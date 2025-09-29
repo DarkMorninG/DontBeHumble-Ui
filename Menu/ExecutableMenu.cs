@@ -88,6 +88,9 @@ namespace DBH.UI.Menu {
         }
 
         public void DeSelected() {
+            if (itemHolder != null) {
+                OnDeSelectedWithItemHolder?.Invoke(ItemHolder());
+            }
             OnDeSelected?.Invoke();
         }
 
