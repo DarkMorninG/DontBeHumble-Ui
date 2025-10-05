@@ -127,32 +127,50 @@ namespace DBH.UI.Menu.MenuParent {
                 ListSelector.Selected);
         }
 
-        protected override void IncreaseVerticalInternal() {
+        protected override bool IncreaseVerticalInternal() {
             ListSelector?.Selected.ExecutableMenu.DirectionInput(ExecutableMenu.Direction.Up);
             if (menuDirection == MenuDirection.Vertical) {
                 ListSelector?.Increase();
+                if (ListSelector?.CurrentList.Count > 1) {
+                    return true;
+                }
             }
+
+            return false;
         }
 
-        protected override void DecreaseVerticalInternal() {
+        protected override bool DecreaseVerticalInternal() {
             ListSelector?.Selected.ExecutableMenu.DirectionInput(ExecutableMenu.Direction.Down);
             if (menuDirection == MenuDirection.Vertical) {
                 ListSelector?.Decrease();
+                if (ListSelector?.CurrentList.Count > 1) {
+                    return true;
+                }
             }
+            return false;
         }
 
-        protected override void IncreaseHorizontalInternal() {
+        protected override bool IncreaseHorizontalInternal() {
             ListSelector?.Selected.ExecutableMenu.DirectionInput(ExecutableMenu.Direction.Right);
             if (menuDirection == MenuDirection.Horizontal) {
                 ListSelector?.Increase();
+                if (ListSelector?.CurrentList.Count > 1) {
+                    return true;
+                }
             }
+            return false;
         }
 
-        protected override void DecreaseHorizontalInternal() {
+        protected override bool DecreaseHorizontalInternal() {
             ListSelector?.Selected.ExecutableMenu.DirectionInput(ExecutableMenu.Direction.Left);
             if (menuDirection == MenuDirection.Horizontal) {
                 ListSelector?.Decrease();
+                if (ListSelector?.CurrentList.Count > 1) {
+                    return true;
+                }
             }
+
+            return false;
         }
 
 

@@ -68,20 +68,24 @@ namespace DBH.UI.Menu.MenuParent {
             gridSelector.CurrentSelected.ExecutableMenu.Abort();
         }
 
-        protected override void IncreaseVerticalInternal() {
+        protected override bool IncreaseVerticalInternal() {
             gridSelector.Up();
+            return gridSelector.GridItems.Count > 1;
         }
 
-        protected override void DecreaseVerticalInternal() {
+        protected override bool DecreaseVerticalInternal() {
             gridSelector.Down();
+            return gridSelector.GridItems.Count > 1;
         }
 
-        protected override void IncreaseHorizontalInternal() {
+        protected override bool IncreaseHorizontalInternal() {
             gridSelector.Left();
+            return gridSelector.GridItems.Count > 1;
         }
 
-        protected override void DecreaseHorizontalInternal() {
+        protected override bool DecreaseHorizontalInternal() {
             gridSelector.Right();
+            return gridSelector.GridItems.Count > 1;
         }
 
 

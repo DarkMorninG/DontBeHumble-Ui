@@ -33,6 +33,9 @@ namespace DBH.UI.Controller {
         [Grab]
         private RawDirectionInput rawDirectionInput;
 
+        [SerializeField]
+        private AudioSource selectSound;
+
         [ReadOnly]
         [ShowInInspector]
         private bool isEnabled;
@@ -154,21 +157,15 @@ namespace DBH.UI.Controller {
         }
 
         private void OnIncDecPressed(Direction direction) {
-            switch (direction) {
-                case Direction.VerticalInc:
-                    CurrentMenu.IncreaseVertical();
-                    break;
-                case Direction.VerticalDec:
-                    CurrentMenu.DecreaseVertical();
-                    break;
-                case Direction.HorizontalDec:
-                    CurrentMenu.DecreaseHorizontal();
-                    break;
-                case Direction.HorizontalInc:
-                    CurrentMenu.IncreaseHorizontal();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
+            var couldMove = direction switch {
+                Direction.VerticalInc => CurrentMenu.IncreaseVertical(),
+                Direction.VerticalDec => CurrentMenu.DecreaseVertical(),
+                Direction.HorizontalDec => CurrentMenu.DecreaseHorizontal(),
+                Direction.HorizontalInc => CurrentMenu.IncreaseHorizontal(),
+                _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
+            };
+            if (couldMove) {
+                selectSound.Play();
             }
         }
 

@@ -48,53 +48,57 @@ namespace DBH.UI.Menu.MenuParent {
             AbortInternal();
         }
 
-        public void IncreaseVertical() {
+        public bool IncreaseVertical() {
             if (defaultExtensions != null) {
                 defaultExtensions.ItemHolderOverride = CurrentMenu.Items;
             }
 
             defaultExtensions?.DirectionInput(ExecutableMenu.Direction.Up);
-            IncreaseVerticalInternal();
+            return IncreaseVerticalInternal();
         }
 
-        public void DecreaseVertical() {
+        public bool DecreaseVertical() {
             if (defaultExtensions != null) {
                 defaultExtensions.ItemHolderOverride = CurrentMenu.Items;
             }
 
             defaultExtensions?.DirectionInput(ExecutableMenu.Direction.Down);
-            DecreaseVerticalInternal();
+            return DecreaseVerticalInternal();
         }
 
-        public void IncreaseHorizontal() {
+        public bool IncreaseHorizontal() {
             if (defaultExtensions != null) {
                 defaultExtensions.ItemHolderOverride = CurrentMenu.Items;
             }
 
             defaultExtensions?.DirectionInput(ExecutableMenu.Direction.Right);
-            IncreaseHorizontalInternal();
+            return IncreaseHorizontalInternal();
         }
 
-        public void DecreaseHorizontal() {
+        public bool DecreaseHorizontal() {
             if (defaultExtensions != null) {
                 defaultExtensions.ItemHolderOverride = CurrentMenu.Items;
             }
 
             defaultExtensions?.DirectionInput(ExecutableMenu.Direction.Left);
-            DecreaseHorizontalInternal();
+            return DecreaseHorizontalInternal();
         }
 
 
-        protected virtual void IncreaseVerticalInternal() {
+        protected virtual bool IncreaseVerticalInternal() {
+            return false;
         }
 
-        protected virtual void DecreaseVerticalInternal() {
+        protected virtual bool DecreaseVerticalInternal() {
+            return false;
         }
 
-        protected virtual void IncreaseHorizontalInternal() {
+        protected virtual bool IncreaseHorizontalInternal() {
+            return false;
         }
 
-        protected virtual void DecreaseHorizontalInternal() {
+        protected virtual bool DecreaseHorizontalInternal() {
+            return false;
         }
 
         public virtual void InputRaw(Vector2 input) {
@@ -128,6 +132,7 @@ namespace DBH.UI.Menu.MenuParent {
             if (defaultExtensions != null) {
                 defaultExtensions.ItemHolderOverride = CurrentMenu.Items;
             }
+
             DefaultExtensions?.DeSelected();
             DefaultExtensions?.Selected();
         }
