@@ -186,8 +186,8 @@ namespace DBH.UI.Menu.MenuParent {
             Destroy(gameObject);
         }
 
-        protected override void CommitInternal() {
-            ListSelector.Selected.ExecutableMenu.Commit();
+        protected override void CommitInternal(AudioPlayerDto audioPlayerDto) {
+            ListSelector.Selected.ExecutableMenu.Commit(audioPlayerDto);
         }
 
         public override void CommitProgress(int progress) {
@@ -202,8 +202,8 @@ namespace DBH.UI.Menu.MenuParent {
             ListSelector?.Selected.ExecutableMenu.CommitProgressAborted();
         }
 
-        protected override void AbortInternal() {
-            ListSelector.Selected.ExecutableMenu.Abort();
+        protected override void AbortInternal(AudioPlayerDto audioPlayerDto) {
+            ListSelector.Selected.ExecutableMenu.Abort(audioPlayerDto);
         }
 
         protected override void CloseInternal() {

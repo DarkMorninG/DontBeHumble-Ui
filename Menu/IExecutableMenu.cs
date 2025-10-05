@@ -1,4 +1,6 @@
 
+using DBH.UI.Controller;
+
 namespace DBH.UI.Menu {
     public interface IExecutableMenu {
         delegate void WithItemHolder(ItemHolder itemHolder);
@@ -26,8 +28,8 @@ namespace DBH.UI.Menu {
         event WithItemHolder OnDeSelectedWithItemHolder;
         event WithItemHolder OnSelectedWithItemHolder;
         event WithItemHolderProgress OnCommitProgressWithItemHolder;
-        void Commit();
-        void Abort();
+        void Commit(AudioPlayerDto audioPlayerDto);
+        void Abort(AudioPlayerDto audioPlayerDto);
         void CommitProgress(int progress);
         void CommitProgressCompleted();
         void CommitProgressAborted();

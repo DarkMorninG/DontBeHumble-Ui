@@ -34,10 +34,7 @@ namespace DBH.UI.Controller {
         private RawDirectionInput rawDirectionInput;
 
         [SerializeField]
-        private AudioClip selectSound;
-
-        [SerializeField]
-        private AudioSource globalSource;
+        private List<AudioSourceDto> audioSources;
 
 
         [ReadOnly]
@@ -169,7 +166,8 @@ namespace DBH.UI.Controller {
                 _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
             };
             if (couldMove) {
-                globalSource.PlayOneShot(selectSound);
+                audioSources.FindOptional(dto => dto.MenuActionType == MenuActionType.CursorMove)
+                    .IfPresent(dto => dto.AudioSource.Play());
             }
         }
 
@@ -184,7 +182,7 @@ namespace DBH.UI.Controller {
         }
 
         private void Confirm() {
-            CurrentMenu.Commit();
+            CurrentMenu.Commit(new AudioPlayerDto(audioSources.Find(dto => dto.MenuActionType == MenuActionType.Commit).AudioSource));
         }
 
         private void ConfirmProgress(int progress) {
@@ -200,7 +198,7 @@ namespace DBH.UI.Controller {
         }
 
         private void AbortRelease() {
-            CurrentMenu.Abort();
+            CurrentMenu.Abort(new AudioPlayerDto(audioSources.Find(dto => dto.MenuActionType == MenuActionType.Abort).AudioSource));
         }
 
         private void RawUiInput(Vector2 vector2) {

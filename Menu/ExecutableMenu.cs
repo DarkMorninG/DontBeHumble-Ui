@@ -1,4 +1,5 @@
 using DBH.Base;
+using DBH.UI.Controller;
 using DBH.UI.Menu.Blocker;
 using UnityEngine;
 
@@ -45,10 +46,28 @@ namespace DBH.UI.Menu {
             return itemHolder;
         }
 
-        public void Commit() {
+        public void Commit(AudioPlayerDto audioPlayerDto) {
             var commitBlock = GetComponent<ICommitBlock>();
             if (commitBlock != null && commitBlock.Denied()) return;
-            OnCommit();
+            if (ItemHolder() != null) {
+                OnCommitEventWithItemHolder?.Invoke(ItemHolder());
+                OnAfterCommitEventWithItemHolder?.Invoke(ItemHolder());
+            }
+
+            OnCommitEvent?.Invoke();
+            OnAfterCommitEvent?.Invoke();
+            audioPlayerDto.Play();
+        }
+
+        public void Abort(AudioPlayerDto audioPlayerDto) {
+            if (ItemHolder() != null) {
+                OnAbortEventWithItemHolder?.Invoke(ItemHolder());
+                OnAfterAbortEventWithItemHolder?.Invoke(ItemHolder());
+            }
+
+            OnAbortEvent?.Invoke();
+            OnAfterAbortEvent?.Invoke();
+            audioPlayerDto.Play();
         }
 
         public void DirectionInput(Direction direction) {
@@ -94,32 +113,7 @@ namespace DBH.UI.Menu {
             OnDeSelected?.Invoke();
         }
 
-        public void Abort() {
-            OnAbort();
-        }
-
         public event IExecutableMenu.ConfirmProgress OnCommitProgress;
-
-
-        private void OnCommit() {
-            if (ItemHolder() != null) {
-                OnCommitEventWithItemHolder?.Invoke(ItemHolder());
-                OnAfterCommitEventWithItemHolder?.Invoke(ItemHolder());
-            }
-
-            OnCommitEvent?.Invoke();
-            OnAfterCommitEvent?.Invoke();
-        }
-
-
-        private void OnAbort() {
-            if (ItemHolder() != null) {
-                OnAbortEventWithItemHolder?.Invoke(ItemHolder());
-                OnAfterAbortEventWithItemHolder?.Invoke(ItemHolder());
-            }
-
-            OnAbortEvent?.Invoke();
-            OnAfterAbortEvent?.Invoke();
-        }
+        
     }
 }

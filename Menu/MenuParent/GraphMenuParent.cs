@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using DBH.UI.Controller;
 using UnityEngine;
 using UnityEngine.UI;
 using Vault;
@@ -60,8 +61,8 @@ namespace DBH.UI.Menu.MenuParent {
         public override void Destroy() {
         }
 
-        protected override void CommitInternal() {
-            graphSelector.CurrentSelected.ExecutableMenu.Commit();
+        protected override void CommitInternal(AudioPlayerDto audioPlayerDto) {
+            graphSelector.CurrentSelected.ExecutableMenu.Commit(audioPlayerDto);
         }
 
         public override void CommitProgress(int progress) {
@@ -76,8 +77,8 @@ namespace DBH.UI.Menu.MenuParent {
             graphSelector?.CurrentSelected.ExecutableMenu.CommitProgressAborted();
         }
 
-        protected override void AbortInternal() {
-            graphSelector.CurrentSelected.ExecutableMenu.Abort();
+        protected override void AbortInternal(AudioPlayerDto audioPlayerDto) {
+            graphSelector.CurrentSelected.ExecutableMenu.Abort(audioPlayerDto);
         }
 
         public override void InputRaw(Vector2 input) {

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DBH.Base;
+using DBH.UI.Controller;
 using UnityEngine;
 using Vault;
 using Vault.BetterCoroutine;
@@ -21,31 +22,34 @@ namespace DBH.UI.Menu.MenuParent {
         public abstract void DeActivateMenu();
         public abstract void Destroy();
 
-        protected abstract void CommitInternal();
-
-        public void Commit() {
-            if (defaultExtensions != null) {
-                defaultExtensions.ItemHolderOverride = CurrentMenu.Items;
-            }
-
-            defaultExtensions?.Commit();
-            CommitInternal();
-        }
+        protected abstract void CommitInternal(AudioPlayerDto audioPlayerDto);
 
         public abstract int MenuPointCount();
 
         public abstract void CommitProgress(int progress);
-        public abstract void CommitProgressCompleted();
-        public abstract void CommitProgressAborted();
-        protected abstract void AbortInternal();
 
-        public void Abort() {
+        public abstract void CommitProgressCompleted();
+
+        public abstract void CommitProgressAborted();
+
+        protected abstract void AbortInternal(AudioPlayerDto audioPlayerDto);
+
+        public void Commit(AudioPlayerDto audioPlayerDto) {
             if (defaultExtensions != null) {
                 defaultExtensions.ItemHolderOverride = CurrentMenu.Items;
             }
 
-            defaultExtensions?.Abort();
-            AbortInternal();
+            defaultExtensions?.Commit(audioPlayerDto);
+            CommitInternal(audioPlayerDto);
+        }
+
+        public void Abort(AudioPlayerDto audioPlayerDto) {
+            if (defaultExtensions != null) {
+                defaultExtensions.ItemHolderOverride = CurrentMenu.Items;
+            }
+
+            defaultExtensions?.Abort(audioPlayerDto);
+            AbortInternal(audioPlayerDto);
         }
 
         public bool IncreaseVertical() {
