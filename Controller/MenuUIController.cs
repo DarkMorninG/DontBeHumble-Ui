@@ -34,7 +34,11 @@ namespace DBH.UI.Controller {
         private RawDirectionInput rawDirectionInput;
 
         [SerializeField]
-        private AudioSource selectSound;
+        private AudioClip selectSound;
+
+        [SerializeField]
+        private AudioSource globalSource;
+
 
         [ReadOnly]
         [ShowInInspector]
@@ -165,7 +169,7 @@ namespace DBH.UI.Controller {
                 _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
             };
             if (couldMove) {
-                selectSound.Play();
+                globalSource.PlayOneShot(selectSound);
             }
         }
 
