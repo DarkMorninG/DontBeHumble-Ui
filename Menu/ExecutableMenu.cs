@@ -15,6 +15,13 @@ namespace DBH.UI.Menu {
         [SerializeField]
         private ItemHolder itemHolder;
 
+        [SerializeField]
+        private AudioClip commitSound;
+
+        [SerializeField]
+        private AudioClip abortSound;
+
+
         public delegate void DirectionChanged(Direction direction);
 
         public abstract Cover Cover { get; }
@@ -56,7 +63,11 @@ namespace DBH.UI.Menu {
 
             OnCommitEvent?.Invoke();
             OnAfterCommitEvent?.Invoke();
-            audioPlayerDto.Play();
+            if (commitSound == null) {
+                audioPlayerDto.Play();
+            } else {
+                audioPlayerDto.Play(commitSound);
+            }
         }
 
         public void Abort(AudioPlayerDto audioPlayerDto) {
@@ -67,7 +78,11 @@ namespace DBH.UI.Menu {
 
             OnAbortEvent?.Invoke();
             OnAfterAbortEvent?.Invoke();
-            audioPlayerDto.Play();
+            if (commitSound == null) {
+                audioPlayerDto.Play();
+            } else {
+                audioPlayerDto.Play(abortSound);
+            }
         }
 
         public void DirectionInput(Direction direction) {
@@ -110,10 +125,10 @@ namespace DBH.UI.Menu {
             if (itemHolder != null) {
                 OnDeSelectedWithItemHolder?.Invoke(ItemHolder());
             }
+
             OnDeSelected?.Invoke();
         }
 
         public event IExecutableMenu.ConfirmProgress OnCommitProgress;
-        
     }
 }
