@@ -55,7 +55,7 @@ namespace DBH.UI.Menu {
 
         public void Commit(AudioPlayerDto audioPlayerDto) {
             var commitBlock = GetComponent<ICommitBlock>();
-            if (commitBlock != null && commitBlock.Denied()) return;
+            if (commitBlock != null && commitBlock.Denied(ItemHolder())) return;
             if (ItemHolder() != null) {
                 OnCommitEventWithItemHolder?.Invoke(ItemHolder());
                 OnAfterCommitEventWithItemHolder?.Invoke(ItemHolder());
