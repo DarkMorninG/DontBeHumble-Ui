@@ -32,12 +32,12 @@ namespace DBH.UI.Input {
 
         private Direction GetDirection(Vector2 input) {
             return input.y switch {
-                > 0.5f => Direction.VerticalDec,
-                < -0.5f => Direction.VerticalInc,
+                > 0.5f => Direction.VerticalInc,
+                < -0.5f => Direction.VerticalDec,
                 _ => input.x switch {
                     > 0.5f => Direction.HorizontalInc,
                     < -0.5f => Direction.HorizontalDec,
-                    _ => Direction.VerticalInc
+                    _ => default
                 }
             };
         }
