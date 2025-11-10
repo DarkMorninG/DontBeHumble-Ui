@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BetterCoroutine;
+using BetterCoroutine.AwaitRuntime;
 using DBH.Attributes;
 using DBH.UI.Controller;
 using DG.Tweening;
@@ -237,7 +239,7 @@ namespace DBH.UI.Menu.MenuParent {
                             position = new Vector3(position.x, position.y - rectTransform.rect.height / 2, position.z);
                         }
 
-                        _createdPointer.transform.DOMove(position, .2f);
+                        _createdPointer.transform.DOMove(position, .1f);
                     });
             } else {
                 var position = newSelected.GameObject.transform.position;
@@ -245,7 +247,7 @@ namespace DBH.UI.Menu.MenuParent {
                     // position = new Vector3(position.x, position.y - rectTransform.rect.height / 2, position.z);
                 }
 
-                _createdPointer.transform.DOMove(position, .2f);
+                _createdPointer.transform.DOMove(position, .1f);
             }
 
             oldSelected?.ExecutableMenu.DeSelected();
@@ -262,14 +264,14 @@ namespace DBH.UI.Menu.MenuParent {
 
         private void CreateMenuPoints(List<GameObject> allMenuPoints, Action<List<MenuPoint>> onFinished) {
             List<MenuPoint> createdMenuPoints = new();
-            List<IAsyncRuntime> allRunTimes = new();
+            List<IAwaitRuntime> allRunTimes = new();
             allMenuPoints.Remove(_createdPointer);
 
             allMenuPoints.ForEach(m => {
                 MenuPoint menuPoint;
                 var customButton = m.GetComponent<ICustomButton>();
                 if (customButton == null) return;
-                allRunTimes.Add(AsyncRuntime.WaitUntil(() => customButton.StartFinished,
+                allRunTimes.Add(IAwaitRuntime.WaitUntil(() => customButton.StartFinished,
                     () => {
                         menuPoint = customButton.Cover.CoverEnabled
                             ? new MenuPoint(m, false, customButton)
@@ -277,7 +279,7 @@ namespace DBH.UI.Menu.MenuParent {
                         createdMenuPoints.Add(menuPoint);
                     }));
             });
-            AsyncRuntime.WaitUntil(() => allRunTimes.All(runtime => runtime.IsFinished),
+            IAwaitRuntime.WaitUntil(() => allRunTimes.All(runtime => runtime.IsFinished),
                 () => {
                     if (createdMenuPoints.IsEmpty()) {
                         _menuUIController.GoBack();

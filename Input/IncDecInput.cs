@@ -1,4 +1,6 @@
-﻿using DBH.Attributes;
+﻿using BetterCoroutine;
+using BetterCoroutine.AwaitRuntime;
+using DBH.Attributes;
 using DBH.Input.api.Extending;
 using UnityEngine;
 using Vault.BetterCoroutine;
@@ -9,7 +11,7 @@ namespace DBH.UI.Input {
         public delegate void IncDecPressed(Direction direction);
 
         public event IncDecPressed OnIncDecPressed;
-        private IAsyncRuntime inputDelay;
+        private IAwaitRuntime inputDelay;
 
         public override string MappedName() {
             return "IncDec";
@@ -21,17 +23,17 @@ namespace DBH.UI.Input {
             if (!inputPressed) return;
             var direction = GetDirection(input);
             if (inputDelay.IsNotRunning()) {
-                inputDelay = AsyncRuntime.WaitForSeconds(() => OnIncDecPressed?.Invoke(direction), .05f);
+                inputDelay = IAwaitRuntime.WaitForSeconds(() => OnIncDecPressed?.Invoke(direction), .05f);
             } else {
-                inputDelay.AndAfterFinishDo(() => inputDelay = AsyncRuntime.WaitForSeconds(() => OnIncDecPressed?.Invoke(direction), .05f));
+                inputDelay.AndAfterFinishDo(() => inputDelay = IAwaitRuntime.WaitForSeconds(() => OnIncDecPressed?.Invoke(direction), .05f));
             }
         }
 
 
         private Direction GetDirection(Vector2 input) {
             return input.y switch {
-                > 0.5f => Direction.VerticalInc,
-                < -0.5f => Direction.VerticalDec,
+                > 0.5f => Direction.VerticalDec,
+                < -0.5f => Direction.VerticalInc,
                 _ => input.x switch {
                     > 0.5f => Direction.HorizontalInc,
                     < -0.5f => Direction.HorizontalDec,
