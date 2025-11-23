@@ -155,7 +155,7 @@ namespace DBH.UI.Menu.MenuParent {
         protected override bool IncreaseHorizontalInternal() {
             ListSelector?.Selected.ExecutableMenu.DirectionInput(ExecutableMenu.Direction.Right);
             if (menuDirection == MenuDirection.Horizontal) {
-                ListSelector?.Increase();
+                ListSelector?.Decrease();
                 if (ListSelector?.CurrentList.Count > 1) {
                     return true;
                 }
@@ -166,7 +166,7 @@ namespace DBH.UI.Menu.MenuParent {
         protected override bool DecreaseHorizontalInternal() {
             ListSelector?.Selected.ExecutableMenu.DirectionInput(ExecutableMenu.Direction.Left);
             if (menuDirection == MenuDirection.Horizontal) {
-                ListSelector?.Decrease();
+                ListSelector?.Increase();
                 if (ListSelector?.CurrentList.Count > 1) {
                     return true;
                 }
