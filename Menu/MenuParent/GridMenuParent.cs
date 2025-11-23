@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using BetterCoroutine.AwaitRuntime;
 using DBH.UI.Controller;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,14 +26,20 @@ namespace DBH.UI.Menu.MenuParent {
                 lastSelected = gridSelector.CurrentSelected;
             }
 
-            UnityAsyncRuntime.WaitForEndOfFrame(() => {
+            var gridLayoutGroup = GetComponent<GridLayoutGroup>();
+            var gridPointer = GetComponent<IGridPointer>();
+            if (gridLayoutGroup != null) {
+                gridPointer.PointerSize = new Vector2(gridLayoutGroup.cellSize.x, gridLayoutGroup.cellSize.y);
+            }
+
+            IAwaitRuntime.WaitForEndOfFrame(() => {
                 CreateMenuPoints(gameObject.GetChildren().Where(o => o.GetComponent<ICustomButton>() != null).ToList(),
                     list => {
                         var gridItems = CreateGridItems(list);
                         gridSelector = lastSelected != null && lastSelected.GameObject != null
                             ? new GridSelector<MultiSelectDto>(gridItems, lastSelected) { RoundRobin = roundRobin }
                             : new GridSelector<MultiSelectDto>(gridItems) { RoundRobin = roundRobin };
-                        GetComponent<IGridPointer>().ActivatePointer(gridSelector, scrollRect);
+                        gridPointer.ActivatePointer(gridSelector, scrollRect);
                     });
             });
         }

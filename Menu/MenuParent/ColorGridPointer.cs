@@ -14,6 +14,8 @@ namespace DBH.UI.Menu.MenuParent {
 
         private ScrollRect scrollRect;
 
+        public Vector2 PointerSize { get; set; }
+
         public void ActivatePointer<T>(ISelector<T> selector, ScrollRect scrollRect = null)
             where T : MultiSelectDto {
             this.scrollRect = scrollRect;

@@ -17,6 +17,8 @@ namespace DBH.UI.Menu.MenuParent {
         private GameObject createdPointer;
         private ScrollRect scrollRect;
 
+        public Vector2 PointerSize { get; set; }
+
         public void ActivatePointer<T>(ISelector<T> selector, ScrollRect scrollRect = null)
             where T : MultiSelectDto {
             this.scrollRect = scrollRect;
@@ -26,6 +28,7 @@ namespace DBH.UI.Menu.MenuParent {
                 createdPointer.SetActive(true);
             }
 
+            createdPointer.GetComponent<RectTransform>().sizeDelta = PointerSize;
             ChangePointer(selector.CurrentSelected, default);
             selector.OnSelectionChange += ChangePointer;
         }

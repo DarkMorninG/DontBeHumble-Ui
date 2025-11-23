@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BetterCoroutine;
+using BetterCoroutine.AwaitRuntime;
 using DBH.Base;
 using DBH.UI.Controller;
 using UnityEngine;
@@ -143,13 +145,13 @@ namespace DBH.UI.Menu.MenuParent {
 
         protected void CreateMenuPoints(List<GameObject> allMenuPoints, Action<List<MenuPoint>> onFinished) {
             List<MenuPoint> createdMenuPoints = new();
-            List<IAsyncRuntime> allRunTimes = new();
+            List<IAwaitRuntime> allRunTimes = new();
 
             allMenuPoints.ForEach(m => {
                 MenuPoint menuPoint;
                 var customButton = m.GetComponent<ICustomButton>();
                 if (customButton == null) return;
-                allRunTimes.Add(AsyncRuntime.WaitUntil(() => customButton.StartFinished,
+                allRunTimes.Add(IAwaitRuntime.WaitUntil(() => customButton.StartFinished,
                     () => {
                         menuPoint = customButton.Cover.CoverEnabled
                             ? new MenuPoint(m, false, customButton)
@@ -157,7 +159,7 @@ namespace DBH.UI.Menu.MenuParent {
                         createdMenuPoints.Add(menuPoint);
                     }));
             });
-            AsyncRuntime.WaitUntil(() => allRunTimes.All(runtime => runtime.IsFinished),
+            IAwaitRuntime.WaitUntil(() => allRunTimes.All(runtime => runtime.IsFinished),
                 () => {
                     if (!createdMenuPoints.IsEmpty()) {
                         onFinished?.Invoke(createdMenuPoints);

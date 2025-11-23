@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using BetterCoroutine.AwaitRuntime;
 using DBH.UI.Controller;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,7 +23,7 @@ namespace DBH.UI.Menu.MenuParent {
                 lastSelected = graphSelector.CurrentSelected;
             }
 
-            UnityAsyncRuntime.WaitForEndOfFrame(() => {
+            IAwaitRuntime.WaitForEndOfFrame(() => {
                 CreateMenuPoints(gameObject.GetChildren().Where(o => o.GetComponent<ICustomButton>() != null).ToList(),
                     list => {
                         graphSelector = lastSelected != null && lastSelected.GameObject != null
