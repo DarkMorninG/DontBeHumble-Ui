@@ -87,12 +87,12 @@ namespace DBH.UI.Menu.MenuParent {
         }
 
         protected override bool IncreaseHorizontalInternal() {
-            gridSelector.Left();
+            gridSelector.Right();
             return gridSelector.GridItems.Count > 1;
         }
 
         protected override bool DecreaseHorizontalInternal() {
-            gridSelector.Right();
+            gridSelector.Left();
             return gridSelector.GridItems.Count > 1;
         }
 
