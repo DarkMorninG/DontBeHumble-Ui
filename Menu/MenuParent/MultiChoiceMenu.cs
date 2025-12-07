@@ -130,6 +130,7 @@ namespace DBH.UI.Menu.MenuParent {
         }
 
         protected override bool IncreaseVerticalInternal() {
+            ListSelector.CurrentList.RemoveAll(dto => dto.GameObject == null);
             ListSelector?.Selected.ExecutableMenu.DirectionInput(ExecutableMenu.Direction.Up);
             if (menuDirection == MenuDirection.Vertical) {
                 ListSelector?.Increase();
@@ -142,6 +143,7 @@ namespace DBH.UI.Menu.MenuParent {
         }
 
         protected override bool DecreaseVerticalInternal() {
+            ListSelector.CurrentList.RemoveAll(dto => dto.GameObject == null);
             ListSelector?.Selected.ExecutableMenu.DirectionInput(ExecutableMenu.Direction.Down);
             if (menuDirection == MenuDirection.Vertical) {
                 ListSelector?.Decrease();
@@ -153,6 +155,7 @@ namespace DBH.UI.Menu.MenuParent {
         }
 
         protected override bool IncreaseHorizontalInternal() {
+            ListSelector.CurrentList.RemoveAll(dto => dto.GameObject == null);
             ListSelector?.Selected.ExecutableMenu.DirectionInput(ExecutableMenu.Direction.Right);
             if (menuDirection == MenuDirection.Horizontal) {
                 ListSelector?.Decrease();
@@ -164,6 +167,7 @@ namespace DBH.UI.Menu.MenuParent {
         }
 
         protected override bool DecreaseHorizontalInternal() {
+            ListSelector.CurrentList.RemoveAll(dto => dto.GameObject == null);
             ListSelector?.Selected.ExecutableMenu.DirectionInput(ExecutableMenu.Direction.Left);
             if (menuDirection == MenuDirection.Horizontal) {
                 ListSelector?.Increase();
