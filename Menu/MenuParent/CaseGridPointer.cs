@@ -13,6 +13,8 @@ namespace DBH.UI.Menu.MenuParent {
         [SerializeField]
         private GameObject pointerPrefab;
 
+        [SerializeField]
+        private Transform parent;
 
         private GameObject createdPointer;
         private ScrollRect scrollRect;
@@ -23,7 +25,7 @@ namespace DBH.UI.Menu.MenuParent {
             where T : MultiSelectDto {
             this.scrollRect = scrollRect;
             if (createdPointer == null) {
-                createdPointer = CreateGameObject(pointerPrefab, transform.parent);
+                createdPointer = CreateGameObject(pointerPrefab, parent == null ? transform.parent : parent);
             } else {
                 createdPointer.SetActive(true);
             }
