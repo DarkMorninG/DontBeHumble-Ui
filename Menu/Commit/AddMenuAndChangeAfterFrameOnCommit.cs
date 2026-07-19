@@ -1,4 +1,5 @@
-﻿using DBH.Attributes;
+﻿using BetterCoroutine.AwaitRuntime;
+using DBH.Attributes;
 using DBH.UI.Controller;
 using UnityEngine;
 using Vault.BetterCoroutine;
@@ -14,9 +15,9 @@ namespace DBH.UI.Menu.Commit {
 
         public override void OnCommit(ItemHolder itemHolder) {
             if (menuParent != null) {
-                UnityAsyncRuntime.WaitForEndOfFrame(() => menuUIController.AddMenuAndChange(menuParent));
+                IAwaitRuntime.WaitForEndOfFrame(() => menuUIController.AddMenuAndChange(menuParent));
             } else if (itemHolder.Contains<MenuParent.MenuParent>()) {
-                UnityAsyncRuntime.WaitForEndOfFrame(() =>
+                IAwaitRuntime.WaitForEndOfFrame(() =>
                     menuUIController.AddMenuAndChange(itemHolder.Item<MenuParent.MenuParent>()));
             }
         }

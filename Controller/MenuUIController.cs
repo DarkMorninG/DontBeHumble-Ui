@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BetterCoroutine;
+using BetterCoroutine.AwaitRuntime;
 using DBH.Attributes;
 using DBH.Base;
 using DBH.Input.api.Extending;
@@ -53,10 +55,10 @@ namespace DBH.UI.Controller {
 
         [PostConstruct]
         private void BindInput() {
-            confirmButtonReleaseInput.OnConfirmButtonPressed += Confirm;
-            abortReleaseInput.OnAbortPressed += AbortRelease;
-            incDecInput.OnIncDecPressed += OnIncDecPressed;
-            rawDirectionInput.OnRawInput += RawUiInput;
+            confirmButtonReleaseInput.OnButtonPerformed += Confirm;
+            abortReleaseInput.OnButtonPerformed += AbortRelease;
+            incDecInput.OnButtonPressed += OnIncDecPressed;
+            rawDirectionInput.OnButtonPressed += RawUiInput;
             confirmProgressInput.OnConfirmHoldAborted += ConfirmProgressAborted;
             confirmProgressInput.OnConfirmProgress += ConfirmProgress;
             confirmProgressInput.OnConfirmCompleted += ConfirmProgressCompleted;
@@ -147,7 +149,7 @@ namespace DBH.UI.Controller {
             menuInteractionChangeds.OrderBy(changed => changed.Order())
                 .ForEach(changed => {
                     changed.BeforeEnabled();
-                    AsyncRuntime.WaitForEndOfFrame(changed.Enabled);
+                    IAwaitRuntime.WaitForEndOfFrame(changed.Enabled);
                 });
         }
 
@@ -157,8 +159,10 @@ namespace DBH.UI.Controller {
             isEnabled = false;
         }
 
-        private void OnIncDecPressed(Direction direction) {
-            var couldMove = direction switch {
+        private void OnIncDecPressed(Vector2 direction) {
+            var closestDirection = GetClosestCardinalDirection(direction);
+
+            var couldMove = closestDirection switch {
                 Direction.VerticalInc => CurrentMenu.IncreaseVertical(),
                 Direction.VerticalDec => CurrentMenu.DecreaseVertical(),
                 Direction.HorizontalDec => CurrentMenu.DecreaseHorizontal(),
@@ -169,6 +173,29 @@ namespace DBH.UI.Controller {
                 audioSources.FindOptional(dto => dto.MenuActionType == MenuActionType.CursorMove)
                     .IfPresent(dto => dto.AudioSource.Play());
             }
+        }
+
+        private enum Direction {
+            VerticalInc,
+            VerticalDec,
+            HorizontalDec,
+            HorizontalInc
+        }
+
+        private Direction GetClosestCardinalDirection(Vector2 input) {
+            if (input.magnitude < 0.01f) {
+                return Direction.VerticalInc;
+            }
+
+            var angle = Mathf.Atan2(input.y, input.x) * Mathf.Rad2Deg;
+            if (angle < 0) angle += 360f;
+
+            return angle switch {
+                >= 45f and < 135f => Direction.VerticalInc,
+                >= 135f and < 225f => Direction.HorizontalDec,
+                >= 225f and < 315f => Direction.VerticalDec,
+                _ => Direction.HorizontalInc
+            };
         }
 
         [Button]
