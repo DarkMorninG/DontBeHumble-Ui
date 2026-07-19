@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DBH.UI.Input {
     [Bean]
-    public class IncDecInput : AbstractValueInputSystem<Vector2> {
+    public class RawDirectionInput : AbstractValueInputSystem<Vector2> {
         protected override string Path => "UI/Navigate";
     }
 }

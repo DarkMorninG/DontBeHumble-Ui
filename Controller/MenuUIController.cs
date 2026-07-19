@@ -55,9 +55,10 @@ namespace DBH.UI.Controller {
 
         [PostConstruct]
         private void BindInput() {
+            Debug.Log("Binding input");
             confirmButtonReleaseInput.OnButtonPerformed += Confirm;
             abortReleaseInput.OnButtonPerformed += AbortRelease;
-            incDecInput.OnButtonPressed += OnIncDecPressed;
+            incDecInput.OnButtonPressed += RawDirectionPressed;
             rawDirectionInput.OnButtonPressed += RawUiInput;
             confirmProgressInput.OnConfirmHoldAborted += ConfirmProgressAborted;
             confirmProgressInput.OnConfirmProgress += ConfirmProgress;
@@ -159,7 +160,7 @@ namespace DBH.UI.Controller {
             isEnabled = false;
         }
 
-        private void OnIncDecPressed(Vector2 direction) {
+        private void RawDirectionPressed(Vector2 direction) {
             var closestDirection = GetClosestCardinalDirection(direction);
 
             var couldMove = closestDirection switch {
