@@ -58,8 +58,8 @@ namespace DBH.UI.Controller {
             Debug.Log("Binding input");
             confirmButtonReleaseInput.OnButtonPerformed += Confirm;
             abortReleaseInput.OnButtonPerformed += AbortRelease;
-            incDecInput.OnButtonPressed += RawDirectionPressed;
-            rawDirectionInput.OnButtonPressed += RawUiInput;
+            incDecInput.OnButtonPerformed += RawDirectionPressed;
+            rawDirectionInput.OnButtonPerformed += RawUiInput;
             confirmProgressInput.OnConfirmHoldAborted += ConfirmProgressAborted;
             confirmProgressInput.OnConfirmProgress += ConfirmProgress;
             confirmProgressInput.OnConfirmCompleted += ConfirmProgressCompleted;
