@@ -1,11 +1,14 @@
 ﻿using DBH.Base;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace DBH.UI.Menu.Highlighting {
     public class ColorHighlighter : DBHMono, IHighlighter {
         [SerializeField]
-        private RawImage rawImage;
+        [FormerlySerializedAs("rawImage")]
+        [Tooltip("The UI Image or Raw Image whose color should be highlighted.")]
+        private Graphic image;
 
         [SerializeField]
         private Color toChange;
@@ -15,11 +18,11 @@ namespace DBH.UI.Menu.Highlighting {
                 
         
         public void EnableHighlight() {
-            rawImage.color = toChange;    
+            image.color = toChange;    
         }
 
         public void DisableHighlight() {
-            rawImage.color = defaultColor;            
+            image.color = defaultColor;            
         }
     }
 }
