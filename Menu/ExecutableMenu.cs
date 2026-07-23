@@ -3,6 +3,7 @@ using DBH.UI.Controller;
 using DBH.UI.Menu.Blocker;
 using DBH.UI.Menu.Highlighting;
 using UnityEngine;
+using Vault;
 
 namespace DBH.UI.Menu {
     public abstract class ExecutableMenu : DBHMono, IExecutableMenu, ICustomButton {
@@ -120,8 +121,8 @@ namespace DBH.UI.Menu {
             }
 
             OnSelected?.Invoke();
-            var highlighter = GetComponent<IHighlighter>();
-            highlighter?.EnableHighlight();
+            var highlighters = GetComponents<IHighlighter>();
+            highlighters.ForEach(highlighter => highlighter.EnableHighlight());
         }
 
         public void DeSelected() {
@@ -130,8 +131,8 @@ namespace DBH.UI.Menu {
             }
 
             OnDeSelected?.Invoke();
-            var highlighter = GetComponent<IHighlighter>();
-            highlighter?.DisableHighlight();
+            var highlighters = GetComponents<IHighlighter>();
+            highlighters.ForEach(highlighter => highlighter.DisableHighlight());
         }
 
         public event IExecutableMenu.ConfirmProgress OnCommitProgress;
