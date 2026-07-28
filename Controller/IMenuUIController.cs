@@ -8,7 +8,7 @@ namespace DBH.UI.Controller {
         HashSet<MenuParent> CurrentlyOpenMenus { get; }
         MenuParent CurrentMenu { get; }
         void GoBack();
-        void AddMenuAndChange(MenuParent toChangeMenuParent);
+        void AddMenuAndChange(MenuParent toChangeMenuParent, bool ignoreCanvasChange = false);
         void OpenMenus();
         void HideMenus();
         void OpenOnlyLast();
