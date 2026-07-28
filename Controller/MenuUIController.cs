@@ -105,7 +105,7 @@ namespace DBH.UI.Controller {
             if (!CurrentlyOpenMenus.IsEmpty()) {
                 CurrentlyOpenMenus.ForEach(m => m.DeActivateMenu());
             }
-            var newCanvas = toChangeMenuParent.gameObject.GetComponentInParent<Canvas>();
+            var newCanvas = FindCanvasInParent(toChangeMenuParent.transform);
             if (CurrentMenuCanvas != newCanvas) {
                 if (CurrentMenuCanvas != null) {
                     CurrentMenuCanvas.gameObject.SetActive(false);                    
@@ -242,6 +242,17 @@ namespace DBH.UI.Controller {
 
         private void RawUiInput(Vector2 vector2) {
             CurrentMenu.InputRaw(vector2);
+        }
+
+        private Canvas FindCanvasInParent(Transform current) {
+            while (current != null) {
+                var canvas = current.GetComponent<Canvas>();
+                if (canvas != null) {
+                    return canvas;
+                }
+                current = current.parent;
+            }
+            return null;
         }
     }
 }
