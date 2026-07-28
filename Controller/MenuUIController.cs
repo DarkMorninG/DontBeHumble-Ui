@@ -50,6 +50,9 @@ namespace DBH.UI.Controller {
         [ReadOnly]
         [ShowInInspector]
         public MenuParent CurrentMenu { get; private set; }
+        [ReadOnly]
+        [ShowInInspector]
+        public Canvas CurrentMenuCanvas { get; private set; }
 
         public event IMenuUIController.ClosedMenu OnCloseMenu;
 
@@ -101,6 +104,14 @@ namespace DBH.UI.Controller {
             EnableMenuInteraction();
             if (!CurrentlyOpenMenus.IsEmpty()) {
                 CurrentlyOpenMenus.ForEach(m => m.DeActivateMenu());
+            }
+            var newCanvas = toChangeMenuParent.gameObject.GetComponentInParent<Canvas>();
+            if (CurrentMenuCanvas != newCanvas) {
+                if (CurrentMenuCanvas != null) {
+                    CurrentMenuCanvas.gameObject.SetActive(false);                    
+                }
+                CurrentMenuCanvas = newCanvas;
+                CurrentMenuCanvas.gameObject.SetActive(true);
             }
 
             CurrentlyOpenMenus.Add(toChangeMenuParent);
