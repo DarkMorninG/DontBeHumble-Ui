@@ -90,16 +90,22 @@ namespace DBH.UI.Controller {
 
         public void Close() {
             lock (CurrentlyOpenMenus) {
-                closing = true;
-                foreach (var currentlyOpenMenu in CurrentlyOpenMenus) {
-                    currentlyOpenMenu.DeActivateMenu();
-                    currentlyOpenMenu.Close();
-                    OnCloseMenu?.Invoke(currentlyOpenMenu);
-                }
+                if (closing) return;
 
-                CurrentlyOpenMenus.Clear();
-                DisableMenuInteraction();
-                closing = false;
+                closing = true;
+                try {
+                    foreach (var currentlyOpenMenu in CurrentlyOpenMenus.ToArray()) {
+                        currentlyOpenMenu.DeActivateMenu();
+                        currentlyOpenMenu.Close();
+                        OnCloseMenu?.Invoke(currentlyOpenMenu);
+                    }
+
+                    CurrentlyOpenMenus.Clear();
+                    DisableMenuInteraction();
+                }
+                finally {
+                    closing = false;
+                }
             }
         }
 
