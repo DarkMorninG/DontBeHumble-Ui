@@ -71,17 +71,20 @@ namespace DBH.UI.Controller {
         }
 
         public void GoBack() {
-            if (CurrentlyOpenMenus.Count < 1) return;
-            var lastMenuParent = CurrentlyOpenMenus.Last();
-            lastMenuParent.DeActivateMenu();
-            lastMenuParent.Close();
-            OnCloseMenu?.Invoke(lastMenuParent);
-            CurrentlyOpenMenus.RemoveLastItem();
-            CurrentlyOpenMenus.ForEach(parent => parent.Open());
-            if (CurrentlyOpenMenus.IsEmpty()) {
-                Close();
-            } else {
-                AddMenuAndChange(CurrentlyOpenMenus.Last());
+            lock (CurrentlyOpenMenus) {
+                if (closing) return;
+                if (CurrentlyOpenMenus.Count < 1) return;
+                var lastMenuParent = CurrentlyOpenMenus.Last();
+                lastMenuParent.DeActivateMenu();
+                lastMenuParent.Close();
+                OnCloseMenu?.Invoke(lastMenuParent);
+                CurrentlyOpenMenus.RemoveLastItem();
+                CurrentlyOpenMenus.ForEach(parent => parent.Open());
+                if (CurrentlyOpenMenus.IsEmpty()) {
+                    Close();
+                } else {
+                    AddMenuAndChange(CurrentlyOpenMenus.Last());
+                }
             }
         }
 
