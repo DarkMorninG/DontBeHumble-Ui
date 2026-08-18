@@ -56,6 +56,7 @@ namespace DBH.UI.Controller {
         public Canvas CurrentMenuCanvas { get; private set; }
 
         public event IMenuUIController.ClosedMenu OnCloseMenu;
+        private bool closing;
 
         [PostConstruct]
         private void BindInput() {
@@ -86,6 +87,7 @@ namespace DBH.UI.Controller {
 
         public void Close() {
             lock (CurrentlyOpenMenus) {
+                closing = true;
                 foreach (var currentlyOpenMenu in CurrentlyOpenMenus) {
                     currentlyOpenMenu.DeActivateMenu();
                     currentlyOpenMenu.Close();
@@ -94,6 +96,7 @@ namespace DBH.UI.Controller {
 
                 CurrentlyOpenMenus.Clear();
                 DisableMenuInteraction();
+                closing = false;
             }
         }
 
@@ -105,6 +108,7 @@ namespace DBH.UI.Controller {
 
         public void AddMenuAndChange(MenuParent toChangeMenuParent, bool ignoreCanvasChange = false) {
             lock (CurrentlyOpenMenus) {
+                if (closing) return;
                 EnableMenuInteraction();
                 if (!CurrentlyOpenMenus.IsEmpty()) {
                     CurrentlyOpenMenus.ForEach(m => m.DeActivateMenu());
