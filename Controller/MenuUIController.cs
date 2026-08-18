@@ -85,14 +85,16 @@ namespace DBH.UI.Controller {
         }
 
         public void Close() {
-            foreach (var currentlyOpenMenu in CurrentlyOpenMenus) {
-                currentlyOpenMenu.DeActivateMenu();
-                currentlyOpenMenu.Close();
-                OnCloseMenu?.Invoke(currentlyOpenMenu);
-            }
+            lock (CurrentlyOpenMenus) {
+                foreach (var currentlyOpenMenu in CurrentlyOpenMenus) {
+                    currentlyOpenMenu.DeActivateMenu();
+                    currentlyOpenMenu.Close();
+                    OnCloseMenu?.Invoke(currentlyOpenMenu);
+                }
 
-            CurrentlyOpenMenus.Clear();
-            DisableMenuInteraction();
+                CurrentlyOpenMenus.Clear();
+                DisableMenuInteraction();
+            }
         }
 
         public void OpenOnlyFirst() {
@@ -102,26 +104,28 @@ namespace DBH.UI.Controller {
         }
 
         public void AddMenuAndChange(MenuParent toChangeMenuParent, bool ignoreCanvasChange = false) {
-            EnableMenuInteraction();
-            if (!CurrentlyOpenMenus.IsEmpty()) {
-                CurrentlyOpenMenus.ForEach(m => m.DeActivateMenu());
-            }
-
-            var newCanvas = FindCanvasInParent(toChangeMenuParent.transform);
-            if (!ignoreCanvasChange) {
-                if (CurrentMenuCanvas != newCanvas) {
-                    if (CurrentMenuCanvas != null) {
-                        CurrentMenuCanvas.gameObject.SetActive(false);
-                    }
-
-                    CurrentMenuCanvas = newCanvas;
-                    CurrentMenuCanvas.gameObject.SetActive(true);
+            lock (CurrentlyOpenMenus) {
+                EnableMenuInteraction();
+                if (!CurrentlyOpenMenus.IsEmpty()) {
+                    CurrentlyOpenMenus.ForEach(m => m.DeActivateMenu());
                 }
-            }
 
-            CurrentlyOpenMenus.Add(toChangeMenuParent);
-            toChangeMenuParent.ActivateMenu();
-            CurrentMenu = toChangeMenuParent;
+                var newCanvas = FindCanvasInParent(toChangeMenuParent.transform);
+                if (!ignoreCanvasChange) {
+                    if (CurrentMenuCanvas != newCanvas) {
+                        if (CurrentMenuCanvas != null) {
+                            CurrentMenuCanvas.gameObject.SetActive(false);
+                        }
+
+                        CurrentMenuCanvas = newCanvas;
+                        CurrentMenuCanvas.gameObject.SetActive(true);
+                    }
+                }
+
+                CurrentlyOpenMenus.Add(toChangeMenuParent);
+                toChangeMenuParent.ActivateMenu();
+                CurrentMenu = toChangeMenuParent;
+            }
         }
 
         public void ChangeCurrentMenu(MenuParent toChangeMenuParent) {
