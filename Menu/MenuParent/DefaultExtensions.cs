@@ -1,6 +1,6 @@
 ﻿namespace DBH.UI.Menu.MenuParent {
     public class DefaultExtensions : ExecutableMenu {
-        public override Cover Cover => null;
+        public override ICover Cover => null;
         
         public ItemHolder ItemHolderOverride { get; set; }
         protected override ItemHolder ItemHolder() {

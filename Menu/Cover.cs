@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace DBH.UI.Menu {
-    public class Cover : DBHMono {
+    public class Cover : DBHMono, ICover {
         private Image _image;
         
         [SerializeField]

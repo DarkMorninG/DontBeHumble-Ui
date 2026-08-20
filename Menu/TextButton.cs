@@ -5,7 +5,7 @@ namespace DBH.UI.Menu {
         [SerializeField]
         private Cover cover;
         
-        public override Cover Cover => cover;
+        public override ICover Cover => cover;
 
 
         public void HideButton() {

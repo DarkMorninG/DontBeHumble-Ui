@@ -26,7 +26,7 @@ namespace DBH.UI.Menu {
 
         public delegate void DirectionChanged(Direction direction);
 
-        public abstract Cover Cover { get; }
+        public virtual ICover Cover => new FakeCover();
 
 
         public event IExecutableMenu.VoidNoParameter OnCommitEvent;

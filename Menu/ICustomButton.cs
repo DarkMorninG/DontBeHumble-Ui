@@ -1,6 +1,6 @@
 namespace DBH.UI.Menu {
     public interface ICustomButton {
-        Cover Cover { get; }
+        ICover Cover { get; }
 
         bool StartFinished { get; }
 
