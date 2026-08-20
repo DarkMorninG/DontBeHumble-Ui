@@ -50,8 +50,8 @@ namespace DBH.UI.Menu.MenuParent {
                 DisplayPointerChange(newSelected, oldSelected);
             }
 
-            newSelected.ExecutableMenu.Selected();
             oldSelected?.ExecutableMenu.DeSelected();
+            newSelected.ExecutableMenu.Selected();
         }
 
 
