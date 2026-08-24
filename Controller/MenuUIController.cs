@@ -124,14 +124,16 @@ namespace DBH.UI.Controller {
                 }
 
                 var newCanvas = FindCanvasInParent(toChangeMenuParent.transform);
-                if (!ignoreCanvasChange || newCanvas == null) {
+                if (!ignoreCanvasChange) {
                     if (CurrentMenuCanvas != newCanvas) {
                         if (CurrentMenuCanvas != null) {
                             CurrentMenuCanvas.gameObject.SetActive(false);
                         }
 
                         CurrentMenuCanvas = newCanvas;
-                        CurrentMenuCanvas.gameObject.SetActive(true);
+                        if (CurrentMenuCanvas != null) {
+                            CurrentMenuCanvas.gameObject.SetActive(true);
+                        }
                     }
                 }
 
