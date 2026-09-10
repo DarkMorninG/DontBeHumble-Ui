@@ -4,6 +4,6 @@ using DBH.Input.api.Extending;
 namespace DBH.UI.Input {
     [Bean]
     public class AbortInput : AbstractButtonInputSystem {
-        protected override string Path => "UI/Cancel";
+        public override string Path => "UI/Cancel";
     }
 }
