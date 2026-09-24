@@ -135,6 +135,8 @@ namespace DBH.UI.Controller {
                             CurrentMenuCanvas.gameObject.SetActive(true);
                         }
                     }
+                } else {
+                    CurrentMenuCanvas = null;
                 }
 
                 CurrentlyOpenMenus.Add(toChangeMenuParent);
