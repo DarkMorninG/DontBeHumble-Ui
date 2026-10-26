@@ -31,7 +31,7 @@ namespace DBH.UI.Menu.MenuParent {
             }
 
             createdPointer.GetComponent<RectTransform>().sizeDelta = PointerSize;
-            ChangePointer(selector.CurrentSelected, default);
+            ChangePointer(selector.CurrentSelected, null);
             selector.OnSelectionChange += ChangePointer;
         }
 
@@ -56,7 +56,7 @@ namespace DBH.UI.Menu.MenuParent {
 
 
         private void DisplayPointerChange(MultiSelectDto newSelected, MultiSelectDto oldSelected) {
-            createdPointer.transform.DOMove(newSelected.GameObject.transform.position, .2f);
+            createdPointer.transform.DOMove(newSelected.GameObject.transform.position, .2f).SetUpdate(true);
         }
     }
 }

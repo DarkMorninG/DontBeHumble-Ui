@@ -243,7 +243,7 @@ namespace DBH.UI.Menu.MenuParent {
                             position = new Vector3(position.x, position.y - rectTransform.rect.height / 2, position.z);
                         }
 
-                        _createdPointer.transform.DOMove(position, .1f);
+                        _createdPointer.transform.DOMove(position, .1f).SetUpdate(true);
                     });
             } else {
                 var position = newSelected.GameObject.transform.position;
@@ -251,7 +251,7 @@ namespace DBH.UI.Menu.MenuParent {
                     // position = new Vector3(position.x, position.y - rectTransform.rect.height / 2, position.z);
                 }
 
-                _createdPointer.transform.DOMove(position, .1f);
+                _createdPointer.transform.DOMove(position, .1f).SetUpdate(true);
             }
 
             oldSelected?.ExecutableMenu.DeSelected();
