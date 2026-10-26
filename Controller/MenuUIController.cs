@@ -38,6 +38,17 @@ namespace DBH.UI.Controller {
         [SerializeField]
         private List<AudioSourceDto> audioSources;
 
+        [SerializeField]
+        [Min(0f)]
+        private float navigationInitialDelay = 0.4f;
+
+        [SerializeField]
+        [Min(0f)]
+        private float navigationRepeatInterval = 0.12f;
+
+        private Direction lastNavigationDirection = Direction.Unknown;
+        private float nextNavigationTime;
+
 
         [ReadOnly]
         [ShowInInspector]
@@ -64,6 +75,7 @@ namespace DBH.UI.Controller {
             confirmButtonReleaseInput.OnButtonPerformed += Confirm;
             abortReleaseInput.OnButtonPerformed += AbortRelease;
             incDecInput.OnButtonPerformed += RawDirectionPressed;
+            incDecInput.OnButtonCanceled += ResetIncDecInput;
             rawDirectionInput.OnButtonPerformed += RawUiInput;
             confirmProgressInput.OnConfirmHoldAborted += ConfirmProgressAborted;
             confirmProgressInput.OnConfirmProgress += ConfirmProgress;
@@ -199,12 +211,24 @@ namespace DBH.UI.Controller {
 
         private void RawDirectionPressed(Vector2 direction) {
             var closestDirection = GetClosestCardinalDirection(direction);
+            if (closestDirection == Direction.Unknown) {
+                ResetIncDecInput(direction);
+                return;
+            }
+
+            var directionChanged = closestDirection != lastNavigationDirection;
+            if (!directionChanged && Time.unscaledTime < nextNavigationTime) return;
+
+            lastNavigationDirection = closestDirection;
+            nextNavigationTime = Time.unscaledTime +
+                                 (directionChanged ? navigationInitialDelay : navigationRepeatInterval);
 
             var couldMove = closestDirection switch {
                 Direction.VerticalInc => CurrentMenu.IncreaseVertical(),
                 Direction.VerticalDec => CurrentMenu.DecreaseVertical(),
                 Direction.HorizontalDec => CurrentMenu.DecreaseHorizontal(),
                 Direction.HorizontalInc => CurrentMenu.IncreaseHorizontal(),
+                Direction.Unknown => false,
                 _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
             };
             if (couldMove) {
@@ -213,16 +237,22 @@ namespace DBH.UI.Controller {
             }
         }
 
+        private void ResetIncDecInput(Vector2 _) {
+            lastNavigationDirection = Direction.Unknown;
+            nextNavigationTime = 0f;
+        }
+
         private enum Direction {
             VerticalInc,
             VerticalDec,
             HorizontalDec,
-            HorizontalInc
+            HorizontalInc,
+            Unknown
         }
 
         private Direction GetClosestCardinalDirection(Vector2 input) {
             if (input.magnitude < 0.01f) {
-                return Direction.VerticalInc;
+                return Direction.Unknown;
             }
 
             var angle = Mathf.Atan2(input.y, input.x) * Mathf.Rad2Deg;
